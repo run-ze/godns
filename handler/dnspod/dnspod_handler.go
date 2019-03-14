@@ -212,9 +212,14 @@ func (handler *Handler) UpdateIP(domainID int64, subDomainID string, subDomainNa
 	value.Add("domain_id", strconv.FormatInt(domainID, 10))
 	value.Add("record_id", subDomainID)
 	value.Add("sub_domain", subDomainName)
-	value.Add("record_type", "A")
 	value.Add("record_line", "默认")
 	value.Add("value", ip)
+
+	if handler.Configuration.IPType == "IPv6" {
+		value.Add("record_type", "AAAA")
+	} else {
+		value.Add("record_type", "A")
+	}
 
 	response, err := handler.PostData("/Record.Modify", value)
 

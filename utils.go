@@ -82,19 +82,14 @@ func GetIPFromInterface(configuration *Settings) (string, error) {
 			continue
 		}
 
-		//the code is not ready for updating an AAAA record
-		/*
-			if (isIPv4(ip.String())){
-				if (configuration.IPType=="IPv6"){
-					continue;
-				}
-			}else{
-				if (configuration.IPType!="IPv6"){
-					continue;
-				}
-			} */
-		if !isIPv4(ip.String()) {
-			continue
+		if isIPv4(ip.String()) {
+			if configuration.IPType == "IPv6" {
+				continue
+			}
+		} else {
+			if configuration.IPType != "IPv6" {
+				continue
+			}
 		}
 
 		return ip.String(), nil
